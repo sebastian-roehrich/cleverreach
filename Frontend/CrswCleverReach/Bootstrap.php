@@ -3,7 +3,7 @@
  * Cleverreach Schnittstelle
  *
  * @link http://www.nfxmedia.de
- * @copyright Copyright (c) 2013, nfx:MEDIA
+ * @copyright Copyright (c) 2014, nfx:MEDIA
  * @author ma, nf - info@nfxmedia.de;
  * @package nfxMEDIA
  * @subpackage nfxCrswCleverReach
