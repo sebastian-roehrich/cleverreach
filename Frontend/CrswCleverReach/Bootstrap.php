@@ -4,7 +4,7 @@
  *
  * @link http://www.nfxmedia.de
  * @copyright Copyright (c) 2014, nfx:MEDIA
- * @author ma, nf - info@nfxmedia.de;
+ * @author ma, nf - cleverreach@nfxmedia.de
  * @package nfxMEDIA
  * @subpackage nfxCrswCleverReach
  * @version 5.0.1 / fix frontend searchProducts action (get the correct searched "product" parameter) + add Newsletter Opt-In Feature + remove data transfer from newsletter update during the ordering process + Plugin Manager easier configuration // 2013-11-05
