@@ -1,9 +1,13 @@
 <?php
+
 /**
  * CleverReach Frontend Class
  * @version 4.0.2 / corrected syntax error in line 240 // 2013-10-18
  */
 class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Action {
+
+    private $shopCategories;
+
     /**
      * init function for frontend controller
      */
@@ -11,13 +15,13 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         //send data to CleverReach only if the Groups for this shop were set
         $shopID = Shopware()->Shop()->getId();
         $settings = self::Plugin()->getSettings($shopID);
-        if($settings["groups"] != true){
+        if ($settings["groups"] != true) {
             return;
         }
 
         $order = array();
 
-        switch($mode) {
+        switch ($mode) {
             case 'content_form':
                 $data = self::prepareDataFromContentform($params['status'], $request);
                 break;
@@ -26,8 +30,8 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                 break;
             case 'checkout_finish':
                 $order = self::prepareDataFromCheckoutFinish($params);
-                $status = ($request['sNewsletter'] == "1") ?: "0";
-                
+                $status = ($request['sNewsletter'] == "1") ? : "0";
+
                 $data = self::prepareDataFromAccount($status);
                 break;
             default:
@@ -36,6 +40,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
 
         self::sendToCleverReach($params['status'], $params['email'], $data, $order, $extra_params);
     }
+
     /**
      * prepare user data from content form
      */
@@ -50,6 +55,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
 
         return $data;
     }
+
     /**
      * prepare user data from user account
      */
@@ -63,12 +69,12 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         $data['strasse'] = $customer['billingaddress']['street'] . ' ' . $customer['billingaddress']['streetnumber'];
         $data['postleitzahl'] = $customer['billingaddress']['zipcode'];
         $data['stadt'] = $customer['billingaddress']['city'];
-        $data['land'] = Shopware()->Db()->fetchOne('SELECT countryname FROM s_core_countries WHERE id="'.$customer['billingaddress']['countryID'].'"');
+        $data['land'] = Shopware()->Db()->fetchOne('SELECT countryname FROM s_core_countries WHERE id="' . $customer['billingaddress']['countryID'] . '"');
 
-        if($status == 0) {
-            $count = Shopware()->Db()->fetchOne('SELECT COUNT(*) FROM s_campaigns_mailaddresses WHERE email="'.$customer['additional']['user']['email'].'"');
+        if ($status == 0) {
+            $count = Shopware()->Db()->fetchOne('SELECT COUNT(*) FROM s_campaigns_mailaddresses WHERE email="' . $customer['additional']['user']['email'] . '"');
 
-            if($count == "0")
+            if ($count == "0")
                 $status = "0";
             else
                 $status = "1";
@@ -78,6 +84,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
 
         return $data;
     }
+
     /**
      * prepare data from finished order
      */
@@ -93,6 +100,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
 
         return $order;
     }
+
     /**
      * get order data from finished order
      */
@@ -103,7 +111,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         $order = Shopware()->Session()->sOrderVariables;
         $orderID = $order['sOrderNumber'];
 
-        foreach($order['sBasket']['content'] as $orderProduct) {
+        foreach ($order['sBasket']['content'] as $orderProduct) {
             $orderDataProduct = array();
 
             $orderDataProduct['purchase_date'] = time();
@@ -114,7 +122,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
             $orderDataProduct['price'] = str_replace(',', '.', $orderProduct['price']);
             $orderDataProduct['source'] = 'Shopware';
 
-            if(Shopware()->Session()->SwpCleverReachMailingID)
+            if (Shopware()->Session()->SwpCleverReachMailingID)
                 $orderDataProduct['mailings_id'] = Shopware()->Session()->SwpCleverReachMailingID;
 
             $orderData[] = $orderDataProduct;
@@ -122,6 +130,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
 
         return $orderData;
     }
+
     /**
      * send data to CleverReach
      */
@@ -131,30 +140,30 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         $listAndForm = self::getListAndForm($order);
         $listID = $listAndForm["listID"];
         $formID = $listAndForm["formID"];
-        if(!$listID){
-            return;//the subscription group was not defined
+        if (!$listID) {
+            return; //the subscription group was not defined
         }
 
         $api = new SoapClient($config["wsdl_url"]);
-        
-        if($status == true) {
+
+        if ($status == true) {
             // add to newsletter
             $attributesData = array();
 
             self::addAttributes($api, $config["api_key"], $listID);
             $postdata = "";
-            foreach($data as $dataKey => $dataValue){
+            foreach ($data as $dataKey => $dataValue) {
                 $attributesData[] = array('key' => $dataKey, 'value' => $dataValue);
-                $postdata .= ($postdata)? "," : "";
-                $postdata .= $dataKey . ":" . $dataValue;//create postdata for opt-in
+                $postdata .= ($postdata) ? "," : "";
+                $postdata .= $dataKey . ":" . $dataValue; //create postdata for opt-in
             }
 
             $receiver = array(
                 'email' => $email,
-                'attributes'=> $attributesData
+                'attributes' => $attributesData
             );
 
-            if(count($order) > 0)
+            if (count($order) > 0)
                 $receiver['orders'] = $order;
 
             $send_optin = false;
@@ -162,33 +171,33 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
             $settings = self::Plugin()->getSettings($shopID);
             //check if the customer already exists
             $response = $api->receiverGetByEmail($config["api_key"], $listID, $email, 0); //000 (0) > Basic readout with (de)activation dates
-            if($response->status == "ERROR") {
-                if($response->statuscode != "20"){
+            if ($response->status == "ERROR") {
+                if ($response->statuscode != "20") {
                     return;
                 }
                 //the customer is not registered yet => add
                 $response = $api->receiverAdd($config["api_key"], $listID, $receiver);
                 //new created user
-                if($formID){
+                if ($formID) {
                     // deacitvate from newsletter; an opt-in email will be sent instead
                     $response = $api->receiverSetInactive($config["api_key"], $listID, $email);
                     $send_optin = true;
                 }
-            }else{
+            } else {
                 //the customer is already registered => update
-                if(!($formID)){
+                if (!($formID)) {
                     $receiver['activated'] = time();
                     $receiver['deactivated'] = "0";
                 }
                 $response = $api->receiverUpdate($config["api_key"], $listID, $receiver);
-                if($formID && $response->status == "SUCCESS"){
-                    if(!$response->data->active){
+                if ($formID && $response->status == "SUCCESS") {
+                    if (!$response->data->active) {
                         // send opt-in if he is inactive
                         $send_optin = true;
                     }
                 }
             }
-             if($send_optin){
+            if ($send_optin) {
                 //send the optin email to the customer
                 $doidata = array(
                     "user_ip" => $extra_params["client_ip"],
@@ -204,33 +213,35 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
             $response = $api->receiverSetInactive($config["api_key"], $listID, $email);
         }
     }
+
     /**
      * get list-ID assigned to the customer
      * +
      * get form-ID for opt-in
      */
-    protected static function getListAndForm ($order) {
+    protected static function getListAndForm($order) {
         $shopID = Shopware()->Shop()->getId();
         $customer = Shopware()->System()->sMODULES['sAdmin']->sGetUserData();
 
         // 0 = Bestellkunden / 100 = Interessenten
 
-        if(!$customer['additional']['user']['id'])
+        if (!$customer['additional']['user']['id'])
             $customergroup = 100;
         else {
-            if(count($order) > 0) {
-                if($customer['additional']['user']['newsletter'] == 0)
+            if (count($order) > 0) {
+                if ($customer['additional']['user']['newsletter'] == 0)
                     $customergroup = 0;
                 else
-                    $customergroup = Shopware()->Db()->fetchOne('SELECT id FROM s_core_customergroups WHERE groupkey="'.$customer['additional']['user']['customergroup'].'"');
+                    $customergroup = Shopware()->Db()->fetchOne('SELECT id FROM s_core_customergroups WHERE groupkey="' . $customer['additional']['user']['customergroup'] . '"');
             } else
-                $customergroup = Shopware()->Db()->fetchOne('SELECT id FROM s_core_customergroups WHERE groupkey="'.$customer['additional']['user']['customergroup'].'"');
+                $customergroup = Shopware()->Db()->fetchOne('SELECT id FROM s_core_customergroups WHERE groupkey="' . $customer['additional']['user']['customergroup'] . '"');
         }
 
-        $list = Shopware()->Db()->fetchRow('SELECT listID, formID FROM swp_cleverreach_assignments WHERE shop="'.$shopID.'" AND customergroup="'.$customergroup.'"');
+        $list = Shopware()->Db()->fetchRow('SELECT listID, formID FROM swp_cleverreach_assignments WHERE shop="' . $shopID . '" AND customergroup="' . $customergroup . '"');
 
         return $list;
     }
+
     /**
      * set group attributes to the newsletter-group in CleverReach
      */
@@ -245,6 +256,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         $api->groupAttributeAdd($apiKey, $listID, "Land", "text", '');
         $api->groupAttributeAdd($apiKey, $listID, "Newsletter", "text", '');
     }
+
     /**
      * perform the products search from CleverReach newsletter creation
      */
@@ -252,7 +264,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         Shopware()->Plugins()->Controller()->ViewRenderer()->setNoRender();
 
         $params = $this->Request()->getParams();
-        switch($params["get"]) {
+        switch ($params["get"]) {
             case "filter":
                 $filters = false;
                 $filter = false;
@@ -262,7 +274,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                 $filter->required = false;
                 $filter->query_key = "product";
                 $filter->type = "input";
-                $filters[]=$filter;
+                $filters[] = $filter;
 
                 echo json_encode($filters);
 
@@ -272,7 +284,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
             case 'search':
                 $items = false;
 
-                $items->settings->type="product";
+                $items->settings->type = "product";
                 $items->settings->link_editable = false;
                 $items->settings->link_text_editable = false;
                 $items->settings->image_size_editable = false;
@@ -280,25 +292,28 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                 $search = $this->Request()->product;
                 $shopID = $this->Request()->getParam('shopID');
 
-                $categoryID = Shopware()->Db()->fetchOne('SELECT category_id FROM s_core_shops WHERE id="'.$shopID.'"');
+                $categoryID = Shopware()->Db()->fetchOne('SELECT category_id FROM s_core_shops WHERE id="' . $shopID . '"');
+
+                $this->shopCategories[] = $categoryID;
+                $this->getCategories($categoryID);
+                $this->shopCategories = join(",", $this->shopCategories);
 
                 $sql = "
                         SELECT articles.id
                         FROM s_articles articles
-                        LEFT JOIN s_categories c ON c.id = '$categoryID'
-                        LEFT JOIN s_categories c2 ON c2.left >= c.left AND c2.right <= c.right
-                        JOIN s_articles_categories ac ON ac.articleID = articles.id AND ac.categoryID = c2.id
-                        WHERE articles.name LIKE '%".$search."%' OR articles.description LIKE '%".$search."%' OR articles.description_long LIKE '%".$search."%'
+                        JOIN s_articles_categories ac ON ac.articleID = articles.id
+                        WHERE (articles.name LIKE '%" . $search . "%' OR articles.description LIKE '%" . $search . "%' OR articles.description_long LIKE '%" . $search . "%')
+                            AND ac.categoryID IN (" . $this->shopCategories . ")
                 ";
 
                 $product_ids = Shopware()->Db()->fetchCol($sql);
 
                 $product_ids = array_unique($product_ids);
 
-                if(count($product_ids) == 0)
+                if (count($product_ids) == 0)
                     exit(0);
 
-                foreach($product_ids as $product_id) {
+                foreach ($product_ids as $product_id) {
                     $out = false;
 
                     $repository = Shopware()->Models()->getRepository('Shopware\Models\Shop\Shop');
@@ -310,10 +325,10 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
 
                     $product = Shopware()->System()->sMODULES['sArticles']->sGetArticleById($product_id);
 
-                    if($product['linkDetailsRewrited'])
-                            $url .= str_replace('http:///', '', $product['linkDetailsRewrited']);
+                    if ($product['linkDetailsRewrited'])
+                        $url .= str_replace('http:///', '', $product['linkDetailsRewrited']);
                     else
-                            $url .= $product['linkDetails'];
+                        $url .= $product['linkDetails'];
 
                     $out->title = $product['articleName'];
                     $out->description = $product['description_long'];
@@ -330,6 +345,26 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                 break;
         }
     }
+
+    /**
+     * This method returns the categories for which articles should be searched
+     */
+    private function getCategories($categories) {
+        $sql = "SELECT id
+                FROM s_categories
+                WHERE parent IN ($categories)";
+        $children = Shopware()->Db()->fetchAll($sql);
+        $new_list = "";
+        foreach ($children as $cat) {
+            $this->shopCategories[] = $cat["id"];
+            $new_list .= ($new_list) ? "," : "";
+            $new_list .= $cat["id"];
+        }
+        if ($new_list) {
+            $this->getCategories($new_list);
+        }
+    }
+
     /**
      * Get an instance of the plugin
      * @return <type>
@@ -337,5 +372,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
     private static function Plugin() {
         return Shopware()->Plugins()->Frontend()->CrswCleverReach();
     }
+
 }
+
 ?>

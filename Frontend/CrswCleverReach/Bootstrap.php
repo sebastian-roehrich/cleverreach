@@ -12,6 +12,7 @@
  * @version 5.0.3 / some design changes + 'newsletter_extra_info' value is 'Shopware' and it is not editable anymore + move 'export_limit' to ''First Export' tab + add 'Reset' button // 2013-11-28
  * @version 5.0.4 / fix the issue when the customer has an invalid customergroup // 2013-12-09
  * @version 5.0.5 / exclude cancelled orders from Erst-Export // 2014-04-23
+ * @version 5.0.6 / fix the category tree for product search // 2014-11-14
  */
 
 /*
@@ -403,7 +404,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
      * @return string
      */
     public function getVersion() {
-        return '5.0.5';
+        return '5.0.6';
     }
     /**
      * get the main info for the plugin
