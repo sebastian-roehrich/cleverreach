@@ -69,10 +69,18 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
         $data['strasse'] = $customer['billingaddress']['street'] . ' ' . $customer['billingaddress']['streetnumber'];
         $data['postleitzahl'] = $customer['billingaddress']['zipcode'];
         $data['stadt'] = $customer['billingaddress']['city'];
-        $data['land'] = Shopware()->Db()->fetchOne('SELECT countryname FROM s_core_countries WHERE id="' . $customer['billingaddress']['countryID'] . '"');
+        try{
+            $data['land'] = Shopware()->Db()->fetchOne("SELECT countryname FROM s_core_countries WHERE id='" . $customer['billingaddress']['countryID'] . "'");
+        } catch (Exception $ex) {
+            //nothing to do; this shouldn't crash, but we had some strange behaviour for a client
+        }
 
         if ($status == 0) {
-            $count = Shopware()->Db()->fetchOne('SELECT COUNT(*) FROM s_campaigns_mailaddresses WHERE email="' . $customer['additional']['user']['email'] . '"');
+            try{
+                $count = Shopware()->Db()->fetchOne("SELECT COUNT(*) FROM s_campaigns_mailaddresses WHERE email='" . $customer['additional']['user']['email'] . "'");
+            } catch (Exception $ex) {
+                //nothing to do;
+            }
 
             if ($count == "0")
                 $status = "0";
@@ -232,12 +240,12 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                 if ($customer['additional']['user']['newsletter'] == 0)
                     $customergroup = 0;
                 else
-                    $customergroup = Shopware()->Db()->fetchOne('SELECT id FROM s_core_customergroups WHERE groupkey="' . $customer['additional']['user']['customergroup'] . '"');
+                    $customergroup = Shopware()->Db()->fetchOne("SELECT id FROM s_core_customergroups WHERE groupkey='" . $customer['additional']['user']['customergroup'] . "'");
             } else
-                $customergroup = Shopware()->Db()->fetchOne('SELECT id FROM s_core_customergroups WHERE groupkey="' . $customer['additional']['user']['customergroup'] . '"');
+                $customergroup = Shopware()->Db()->fetchOne("SELECT id FROM s_core_customergroups WHERE groupkey='" . $customer['additional']['user']['customergroup'] . "'");
         }
 
-        $list = Shopware()->Db()->fetchRow('SELECT listID, formID FROM swp_cleverreach_assignments WHERE shop="' . $shopID . '" AND customergroup="' . $customergroup . '"');
+        $list = Shopware()->Db()->fetchRow("SELECT listID, formID FROM swp_cleverreach_assignments WHERE shop='" . $shopID . "' AND customergroup='" . $customergroup . "'");
 
         return $list;
     }
@@ -292,7 +300,7 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                 $search = $this->Request()->product;
                 $shopID = $this->Request()->getParam('shopID');
 
-                $categoryID = Shopware()->Db()->fetchOne('SELECT category_id FROM s_core_shops WHERE id="' . $shopID . '"');
+                $categoryID = Shopware()->Db()->fetchOne("SELECT category_id FROM s_core_shops WHERE id='" . $shopID . "'");
 
                 $this->shopCategories[] = $categoryID;
                 $this->getCategories($categoryID);

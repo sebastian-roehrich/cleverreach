@@ -13,6 +13,7 @@
  * @version 5.0.4 / fix the issue when the customer has an invalid customergroup // 2013-12-09
  * @version 5.0.5 / exclude cancelled orders from Erst-Export // 2014-04-23
  * @version 5.0.6 / fix the category tree for product search // 2014-11-14
+ * @version 5.0.7 / add some try-catch to the frontend controller // 2014-12-02
  */
 
 /*
@@ -404,7 +405,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
      * @return string
      */
     public function getVersion() {
-        return '5.0.6';
+        return '5.0.7';
     }
     /**
      * get the main info for the plugin
