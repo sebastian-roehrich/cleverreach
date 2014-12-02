@@ -3,7 +3,7 @@
  * Cleverreach Schnittstelle
  *
  * @link http://www.nfxmedia.de
- * @copyright Copyright (c) 2014, nfx:MEDIA
+ * @copyright Copyright (c) 2013-2014, nfx:MEDIA
  * @author ma, nf - cleverreach@nfxmedia.de
  * @package nfxMEDIA
  * @subpackage nfxCrswCleverReach
@@ -414,7 +414,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
         return array(
                 'version' => $this->getVersion(),
                 'autor' => 'CleverReach & nfx:MEDIA',
-                'copyright' => 'Copyright (c) 2013, CleverReach GmbH & Co. KG, nfx:MEDIA',
+                'copyright' => 'Copyright (c) 2013-2014, CleverReach GmbH & Co. KG, nfx:MEDIA',
                 'label' => 'CleverReach - E-Mail Marketing',
                 'support' => 'http://support.cleverreach.de',
                 'link' => 'http://www.cleverreach.de/frontend/?rk=shopware',
