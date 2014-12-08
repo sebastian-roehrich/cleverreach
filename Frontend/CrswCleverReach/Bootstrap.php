@@ -184,7 +184,8 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
 
         $view = $args->getSubject()->View();
         $icon = base64_encode(file_get_contents($this->Path() . '/images/cleverreach.png'));
-        $style = '<style type="text/css">.cleverreachicon { background: url(data:image/png;base64,' . $icon . ') no-repeat 0px 0px transparent;}</style>';
+        $icon_questionmark = base64_encode(file_get_contents($this->Path() . '/images/questionmark.png'));
+        $style = '<style type="text/css">.cleverreachicon { background: url(data:image/png;base64,' . $icon . ') no-repeat 0px 0px transparent;} .cleverreach_questionmark_icon { background: url(data:image/png;base64,' . $icon_questionmark . ') no-repeat center 0px transparent;}</style>';
         $view->extendsBlock('backend/base/header/css', $style, 'append');
     }
     /**

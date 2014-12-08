@@ -158,8 +158,10 @@ Ext.define('Shopware.apps.SwpCleverReach.view.main.Assignments', {
         var me = this;
         if(record.get("customergroup") == 0){
             metaData.tdAttr = 'data-qtip="' + me.snippets.tooltips.orderclients + '"';
+            value = '<div class="cleverreach_questionmark_icon">' + value + '</div>';
         } else if(record.get("groupkey") == 'EK'){
             metaData.tdAttr = 'data-qtip="' + me.snippets.tooltips.shopclients + '"';
+            value = '<div class="cleverreach_questionmark_icon">' + value + '</div>';
         }
         return value;
     }
