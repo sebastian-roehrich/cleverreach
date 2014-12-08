@@ -15,6 +15,10 @@ Ext.define('Shopware.apps.SwpCleverReach.view.main.Assignments', {
             description : '{s name=assignments/columns/description}Kundengruppen{/s}',
             listID : '{s name=assignments/columns/listID}Listen{/s}',
             formID : '{s name=assignments/columns/formID}Formen{/s}'
+        },
+        tooltips: {
+            shopclients: '{s name=assignments/tooltips/shop_clients}Shopkunden haben die Newsletter-Checkbox aktiv ausgewählt.{/s}',
+            orderclients: '{s name=assignments/tooltips/order_clients}Bestellkunden sind alle Kunden im Shop, auch jene ohne Aktivierung der Newsletter-Checkbox.{/s}'
         }
     },
 
@@ -35,7 +39,8 @@ Ext.define('Shopware.apps.SwpCleverReach.view.main.Assignments', {
         return [{
             text: me.snippets.columns.description,
             dataIndex: 'description',
-            flex: 1
+            flex: 1,
+            renderer: me.renderCustomerGroupsColumn
         },
         {
             text: me.snippets.columns.listID,
@@ -100,7 +105,7 @@ Ext.define('Shopware.apps.SwpCleverReach.view.main.Assignments', {
 
     renderGroupsColumn: function(value, metaData, record) {
         var me = this,
-        group_record;
+            group_record;
         if (value === Ext.undefined || value === null) {
             return value;
         }
@@ -147,5 +152,15 @@ Ext.define('Shopware.apps.SwpCleverReach.view.main.Assignments', {
         combo.bindStore(parent.groupsStore.getById(record[0].get("id")).getForms());
         //kein Opt-In
         combo.setValue(-1);
+    },
+
+    renderCustomerGroupsColumn: function(value, metaData, record) {
+        var me = this;
+        if(record.get("customergroup") == 0){
+            metaData.tdAttr = 'data-qtip="' + me.snippets.tooltips.orderclients + '"';
+        } else if(record.get("groupkey") == 'EK'){
+            metaData.tdAttr = 'data-qtip="' + me.snippets.tooltips.shopclients + '"';
+        }
+        return value;
     }
 });

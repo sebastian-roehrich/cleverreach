@@ -214,14 +214,15 @@ class Shopware_Controllers_Backend_SwpCleverReach extends Shopware_Controllers_B
                    cg.id AS customergroup,
                    cg.description,
                    IFNULL(ca.listID, -1) AS listID,
-                   IFNULL(ca.formID, -1) AS formID
+                   IFNULL(ca.formID, -1) AS formID,
+                   cg.groupkey
             FROM s_core_shops AS scs
             CROSS JOIN (
-            	SELECT 0 AS id, 'Bestellkunden' AS description, 1 AS ordtype
+            	SELECT 0 AS id, 'Bestellkunden' AS description, 1 AS ordtype, '' AS groupkey
                 UNION
-                SELECT id, description, 2 AS ordtype FROM s_core_customergroups
+                SELECT id, description, 2 AS ordtype, groupkey FROM s_core_customergroups
                 UNION
-                SELECT 100 AS id, 'Interessenten' AS description, 3 AS ordtype
+                SELECT 100 AS id, 'Interessenten' AS description, 3 AS ordtype, '' AS groupkey
             ) AS cg
             LEFT JOIN swp_cleverreach_assignments ca ON cg.id = ca.customergroup
                         AND scs.id = ca.shop

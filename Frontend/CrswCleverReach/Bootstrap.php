@@ -14,6 +14,7 @@
  * @version 5.0.5 / exclude cancelled orders from Erst-Export // 2014-04-23
  * @version 5.0.6 / fix the category tree for product search // 2014-11-14
  * @version 5.0.7 / add some try-catch to the frontend controller // 2014-12-02
+ * @version 5.0.8 / add tooltips to some customer groups // 2014-12-08
  */
 
 /*
@@ -405,7 +406,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
      * @return string
      */
     public function getVersion() {
-        return '5.0.7';
+        return '5.0.8';
     }
     /**
      * get the main info for the plugin

@@ -5,7 +5,7 @@ Ext.define('Shopware.apps.SwpCleverReach.model.Assignment', {
             { name: 'description',  type: 'string' },
             { name: 'listID',  type: 'int' , useNull: true },
             { name: 'formID',  type: 'int' , useNull: true },
-
+            { name: 'groupkey',  type: 'string' },
             { name: 'shopId', type: 'int' },
             { name: 'shop_name',  type: 'string' },
             { name: 'active',  type: 'boolean' }
