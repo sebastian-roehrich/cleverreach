@@ -15,7 +15,7 @@ API-Key: Zunächst benötigen Sie den "API-Schlüssel" (API-Key), um Ihr Plugin 
 
 
 ![Abbildung: Backend Einstellungen im Überblick](/Frontend/CrswCleverReach/docs/Cleverreach_Backend_Einstellungen.png)
-
+Abbildung: Backend Einstellungen im Überblick
 
 **2. Gruppen Zuordnung**
 Der nächste Schritt nach der Aktivierung des Tools ist es, CleverReach Gruppen den Shopware-Kundengruppen zuzuweisen. 
@@ -42,6 +42,7 @@ Der nächste Schritt nach der Aktivierung des Tools ist es, CleverReach Gruppen 
 Für den Export von bestehenden (Shop-)Kundendaten zu CleverReach gehen Sie bitte auf den Export-Tab. Durch die Betätigung des Buttons “Start Export” gleich neben dem entsprechenden Shop. Die Kundendaten werden in einer Mehrfachverarbeitung (Batch) exportiert: “Export-Limit pro Step (max. 50):“ -  der Standardwert ist hier 50.
 
 
+![Abbildung: Abbildung: Backend Erst-Export](/Frontend/CrswCleverReach/docs/Cleverreach_Backend_Erst_Export.png)
 Abbildung: Backend Erst-Export
 
 Die Kunden werden entsprechend der vorher festgelegten (in den vorgenannten Schritten) Zuordnungen exportiert. Der Exportstatus wird unter dem Bereich „Details“ angezeigt. Den erfolgreichen Export Ihrer Daten können Sie in der Status-Information unter der Rubrik Erst-Export einsehen: ein grünes Häkchen bestätigt den Export für den entsprechenden Shop.
@@ -51,6 +52,7 @@ Der Shopbesitzer kann das Opt-In Feature für jede Shopware Kundengruppe aktivie
 
  Dafür muss eine Formular-Vorlage unter https://eu.cleverreach.com  und Empfänger > Formulare definiert werden. Hier lässt sich eine große Auswahl von Vorlagen für die jeweiligen Gruppen anlegen.
 
+![Abbildung: Formular-Vorlagen erstellen](/Frontend/CrswCleverReach/docs/Cleverreach_Formular_erstellen.png)
 Abbildung: Formular-Vorlagen erstellen
 
  Im Anschluss daran steht Ihnen dann, zurück im Shopware Shop Fenster, innerhalb des Bereichs Shop/Kundengruppen-Listen-Zuordnung, die zuvor definierte Opt-In-Liste inklusive der Formular-Vorlagen für Ihre CleverReach Gruppe, zur Verfügung. Insofern können Sie nun eine Vorlage auswählen und das Opt-In-Feature für Ihre Kundengruppen aktivieren.
@@ -61,12 +63,37 @@ Das Produkt-Suche - Feature kann für die Erstellung von Emails mit 'dynamischen
  Nachzuprüfen ist dies ebenfalls unter https://eu.cleverreach.com - Account > Integrationen/Plugins. Dort gibt es den Bereich Produkt-Suche Links und der neue Link wird angezeigt “Shopware - <Name des Shops>”. 
 
 
+![Abbildung: Abbildung: Aktivierte Produkt-Suche; Shop hinzufügen](/Frontend/CrswCleverReach/docs/Cleverreach_Produkt_Suche.png)
 Abbildung: Aktivierte Produkt-Suche; Shop hinzufügen
 
 Sofern Sie ein neues Mailing erstellen wollen, der Dynamic-Content erhält, gehen Sie auf "+ Neues Element" in Ihrem E-Mail > Design-Editor: hier kann durch die vorgenannte Freigabe der Produkt-Suche zum Beispiel nach Ihren Shopware Produkten  gesucht werden. Das bedeutet im (technischen) Detail: CleverReach verbindet sich mit Shopware, empfängt die Details zu Artikeln und zeigt sie innerhalb der E-Mail-Vorlage an. Wie das Produkt in Ihrem Mailing dargestellt wird, also hinsichtlich des Layouts, bietet CleverReach Auswahlmöglichkeiten an. 
 
 
+![Abbildung: Email-Entwurf / dynamischer Content in der Anwendung](/Frontend/CrswCleverReach/docs/Cleverreach_Email_Entwurf.png)
 Abbildung: Email-Entwurf / dynamischer Content in der Anwendung
 
 **6. Reset der Konfigurationen**
 Alle vorgenommenen Konfigurationen können durch den Button “Reset” zurückgesetzt werden.
+
+
+
+
+
+***Häufig gestellte Fragen (FAQ)***
+
+**1. Was ist der Unterschied zwischen Bestellkunden und Shopkunden?**
+
+Mit Bestellkunden sind diejenigen Kunden gemeint, die die Newsletter-Option unmarkiert ('unchecked') gelassen haben - sozusagen ‚reine‘ Bestell-Kunden. 
+Mit Shopkunden wiederum sind diejenigen Kunden gemeint, die die Newsletter-Checkbox aktiviert haben. Diese Kunden können beispielsweise im Newsletter-Mailing mit einer persönlichen Anrede angesprochen werden, da diese Daten vorliegen.
+
+
+**2. Was sind die häufigsten Gründe, dass meine Kundendaten nicht übertragen werden?**
+
+Die häufigste Ursache für eine fehlerhafte / lückenhafte Übertragung von Kundendaten zwischen CleverReach und Shopware ist die fehlende Definition von Gruppen und damit der Zuordnung von Shopware-Daten zu CleverReach und umgekehrt. 
+Bitte definieren Sie Kunden-Gruppen unter CleverReach und ordnen Sie diese den Shopware-Gruppen unter der Rubrik " Shop-Kundengruppen-Listen-Zuordnung" zu und führen Sie den "Erst-Export" erneut durch.
+
+
+**3. Wie werden direkte Newsletter-Anmeldungen übertragen?**
+
+Kunden, die sich für die direkte Newsletter-Anmeldung in Ihrem Shop entschieden haben, befinden sich in der Gruppe Interessenten.
+Mit Interessenten werden eben diese "non-customers" (Nicht-Einkaufs-Kunden) bezeichnet, die den Newsletter über das Newsletter-Kontaktformular im Frontend abonniert haben: In der Anwendung, bedeutet das, dass Sie somit das Mailing an Interessenten (Newsletter/oder andere Mailings) mit einer anonymisierten Anrede verfassen können, da die Kunden dieser Gruppe i. d. R. lediglich die Angabe zu Ihrer Email-Adresse getätigt haben. Demgegenüber steht die Gruppe der Shopkunden, die die Newsletter-Checkbox über Ihr Kundenkonto aktiviert haben und von denen entsprechend (mehr) persönliche Daten vorliegen.
