@@ -14,7 +14,7 @@ API-Key: Zunächst benötigen Sie den "API-Schlüssel" (API-Key), um Ihr Plugin 
  Weiterhin könne Sie unter dem Feld “Status” das letzte Datum der Statusüberprüfung sehen; diese Überprüfung geschieht automatisch sobald das Fenster geöffnet wird oder sobald der Button "Speichern und Status prüfen" betätigt wurde. Alle weiteren Bereiche sind nun editierbar und können konfiguriert werden. 
 
 
-![Abbildung: Backend Einstellungen im Überblick](/.../cleverreach/Frontend/CrswCleverReach/docs/Cleverreach_Backend_Einstellungen.png)
+![Abbildung: Backend Einstellungen im Überblick](/Frontend/CrswCleverReach/docs/Cleverreach_Backend_Einstellungen.png)
 
 
 **2. Gruppen Zuordnung**
