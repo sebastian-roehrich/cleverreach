@@ -1,8 +1,5 @@
--cleverreach
--===========
--
--Cleverreach-Plugin for Shopware 4.x
--
+#Cleverreach-Plugin for Shopware 4.x#
+
 
 Nach der Installation finden Sie ein neues Menü-Item in Ihrem Shopware Shop unter der Rubrik Marketing: > CleverReach. Die nachfolgenden zwei Schritte, also 1. die Aktivierung des Plugins und 2. die Zuordnung einer CleverReach-Gruppe für mindestens eine Shopware Kundengruppe, sind obligatorisch als Minimalkonfiguration zur Nutzung Ihres CleverReach-Plugins. Bitte führen Sie anschließend den Erst-Export durch (Punkt 3) und informieren sich unter Punkt 4, 5 und 6 über die weiteren Möglichkeiten zur Einstellung Ihres Plugins.
 
@@ -79,7 +76,7 @@ Alle vorgenommenen Konfigurationen können durch den Button “Reset” zurückg
 
 
 
-***Häufig gestellte Fragen (FAQ)***
+#Häufig gestellte Fragen (FAQ)#
 
 **1. Was ist der Unterschied zwischen Bestellkunden und Shopkunden?**
 
