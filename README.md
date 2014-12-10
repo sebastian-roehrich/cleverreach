@@ -1,3 +1,9 @@
+-cleverreach
+-===========
+-
+-Cleverreach-Plugin for Shopware 4.x
+-
+
 Nach der Installation finden Sie ein neues Menü-Item in Ihrem Shopware Shop unter der Rubrik Marketing: > CleverReach. Die nachfolgenden zwei Schritte, also 1. die Aktivierung des Plugins und 2. die Zuordnung einer CleverReach-Gruppe für mindestens eine Shopware Kundengruppe, sind obligatorisch als Minimalkonfiguration zur Nutzung Ihres CleverReach-Plugins. Bitte führen Sie anschließend den Erst-Export durch (Punkt 3) und informieren sich unter Punkt 4, 5 und 6 über die weiteren Möglichkeiten zur Einstellung Ihres Plugins.
 
 **1. Aktivierung** 
@@ -8,7 +14,7 @@ API-Key: Zunächst benötigen Sie den "API-Schlüssel" (API-Key), um Ihr Plugin 
  Weiterhin könne Sie unter dem Feld “Status” das letzte Datum der Statusüberprüfung sehen; diese Überprüfung geschieht automatisch sobald das Fenster geöffnet wird oder sobald der Button "Speichern und Status prüfen" betätigt wurde. Alle weiteren Bereiche sind nun editierbar und können konfiguriert werden. 
 
 
-Abbildung: Backend Einstellungen im Überblick
+![Abbildung: Backend Einstellungen im Überblick](cleverreach/Frontend/CrswCleverReach/docs/Cleverreach_Backend_Einstellungen.png)
 
 
 **2. Gruppen Zuordnung**
