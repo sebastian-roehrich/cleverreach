@@ -15,6 +15,7 @@
  * @version 5.0.6 / fix the category tree for product search // 2014-11-14
  * @version 5.0.7 / add some try-catch to the frontend controller // 2014-12-02
  * @version 5.0.8 / add tooltips to some customer groups // 2014-12-08
+ * @version 5.0.9 / the Shopware newsletter email is not sent anymore // 2015-01-21
  */
 
 /*
@@ -88,6 +89,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
      * @return bool
      */
     public function update($version) {
+        $this->subscribeEvents();
         if($version < "5.0.3"){
             $this->sql_v_5_0_3();
         }
@@ -154,6 +156,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
         $this->subscribeEvent('sAdmin::sNewsletterSubscription::after', 'after_sNewsletterSubscription');
         $this->subscribeEvent('sAdmin::sUpdateNewsletter::after', 'after_sUpdateNewsletter');
         $this->subscribeEvent('Shopware_Controllers_Frontend_Checkout::finishAction::after', 'after_finishAction');
+        $this->subscribeEvent('Shopware_Controllers_Frontend_Newsletter::sendMail::replace', 'onReplaceSendNewsletterEmail');
 
         $this->subscribeEvent('Enlight_Controller_Action_PreDispatch', 'onPreDispatch');
     }
@@ -298,6 +301,41 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
                 "client_ip" => $this->request->getClientIp(false)
         );
     }
+
+    /**
+     * Do not send the email from Shopware
+     * @param Enlight_Hook_HookArgs $args
+     */
+    public function onReplaceSendNewsletterEmail(Enlight_Hook_HookArgs $args) {
+        try {
+            $shopID = Shopware()->Shop()->getId();
+            $settings = $this->getSettings($shopID);
+            if ($settings["groups"] == true) {
+                $customer = Shopware()->System()->sMODULES['sAdmin']->sGetUserData();
+                if (!$customer['additional']['user']['id'])
+                    $customergroup = 100; //Interessenten
+                else {
+                    $customergroup = Shopware()->Db()->fetchOne("SELECT id FROM s_core_customergroups WHERE groupkey='" . $customer['additional']['user']['customergroup'] . "'");
+                    if(!$customergroup){
+                        $customergroup = 100; //Interessenten
+                    }
+                }
+                $list = Shopware()->Db()->fetchRow("SELECT listID, formID FROM swp_cleverreach_assignments WHERE shop='" . $shopID . "' AND customergroup='" . $customergroup . "'");
+                if ($list["listID"]) {
+                    if ($args->getTemplate() == 'sNEWSLETTERCONFIRMATION' && $list["formID"]) {
+                        return;
+                    }
+                }
+            }
+            $args->setReturn(
+                    $args->getSubject()->executeParent(
+                            $args->getMethod(), $args->getArgs()
+                    )
+            );
+        } catch (Exception $ex) {
+            
+        }
+    }
     /**
      * create database tables/columns for the plugin
      */
@@ -407,7 +445,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
      * @return string
      */
     public function getVersion() {
-        return '5.0.8';
+        return '5.0.9';
     }
     /**
      * get the main info for the plugin
