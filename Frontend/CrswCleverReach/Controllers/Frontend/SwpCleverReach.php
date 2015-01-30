@@ -334,17 +334,29 @@ class Shopware_Controllers_Frontend_SwpCleverReach extends Enlight_Controller_Ac
                     $product = Shopware()->System()->sMODULES['sArticles']->sGetArticleById($product_id);
 
                     if ($product['linkDetailsRewrited'])
-                        $url .= str_replace('http:///', '', $product['linkDetailsRewrited']);
+                        //$url .= str_replace('http:///', '', $product['linkDetailsRewrited']);
+                        $url = $product['linkDetailsRewrited'];
                     else
                         $url .= $product['linkDetails'];
 
                     $out->title = $product['articleName'];
                     $out->description = $product['description_long'];
-                    $out->image = $product['image']['src'][2];
+                    $out->attr1 = $product['attr1'];
+                    $out->attr5 = $product['attr5'];
+                    $out->supplierName = $product['supplierName'];
+                    $out->image = $product['image']['src'][4];
                     $out->price = $product['price'];
                     $out->url = $url;
 
+                    //Build complete pieces
+                    $out->quoteLink = '<a href="' . $url . '" title="' . $product['articleName'] . '" style="font-size:20px;font-weight:bold;color:#575757;text-decoration:none;">' . $product['attr5'] . '</a>';
+                    $out->nameLink = '<a href="' . $url . '" title="' . $product['articleName'] . '" style="font-size:20px;font-weight:bold;color:#575757;text-decoration:none;">' . $product['articleName'] . '</a>';
+                    $out->priceLink = '<a href="' . $url . '" title="Preis für ' . $product['articleName'] . '" style="font-size:30px;font-weight:bold;color:#575757;text-decoration:none;">' . $product['price'] . ' &euro;*</a>';
+                    $out->imageLink = '<a href="' . $url . '" title="Produktbild für ' . $product['articleName'] . '" style="text-decoration:none;"><img src="' . $out->image . '" alt="Produktbild für ' . $product['articleName'] . '" /></a>';
+                    $out->imageLinkBig = '<a href="' . $url . '" title="Produktbild für ' . $product['articleName'] . '" style="text-decoration:none;"><img src="' . $product['image']['src'][6] . '" alt="Produktbild für ' . $product['articleName'] . '" /></a>';
+
                     $items->items[] = $out;
+
                 }
                 echo json_encode($items);
 
