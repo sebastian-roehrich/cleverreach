@@ -307,6 +307,11 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
      * @param Enlight_Hook_HookArgs $args
      */
     public function onReplaceSendNewsletterEmail(Enlight_Hook_HookArgs $args) {
+        
+        //Deactivated, always return as this function is modified elsewhere
+        return;
+    
+        /**
         try {
             $shopID = Shopware()->Shop()->getId();
             $settings = $this->getSettings($shopID);
@@ -335,6 +340,7 @@ class Shopware_Plugins_Frontend_CrswCleverReach_Bootstrap extends Shopware_Compo
         } catch (Exception $ex) {
             
         }
+        **/
     }
     /**
      * create database tables/columns for the plugin
